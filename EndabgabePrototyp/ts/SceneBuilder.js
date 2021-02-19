@@ -247,21 +247,7 @@ var EndabgabePrototyp;
             //floor.getComponent(f.ComponentMaterial).pivot.scale(f.Vector2.ONE(1));
             EndabgabePrototyp.root.appendChild(floor);
         }
-        /* private buildStartButton(): void {
-            let meshQuad: f.MeshQuad = new f.MeshQuad("Quad");
-            let txtStartButton: f.TextureImage = new f.TextureImage("../assets/button1.png");
-            let mtrStartButton: f.Material = new f.Material("Background", f.ShaderTexture, new f.CoatTextured(f.Color.CSS("WHITE"), txtStartButton));
-            let button: faid.Node = new faid.Node("Background", f.Matrix4x4.ROTATION_X(0), mtrStartButton, meshQuad);
-            button.mtxLocal.scale(f.Vector3.ONE(15));
-            button.mtxLocal.scaleX(1.5);
-            button.mtxLocal.translateZ(0.5);
-            button.mtxLocal.translateY(-0.4);
-            button.mtxLocal.translateX(0.025);
-
-            
-            
-            root.appendChild(button);
-        } */
+        
         buildWalls(_left, _right, _depth) {
             let wallLeft = new EndabgabePrototyp.Wall("wallLeft", new f.Vector3(_left, 0, _depth), new f.Vector2(1, 30));
             let wallRight = new EndabgabePrototyp.Wall("wallRight", new f.Vector3(_right, 0, _depth), new f.Vector2(1, 30));

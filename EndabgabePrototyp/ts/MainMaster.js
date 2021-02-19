@@ -64,7 +64,7 @@ var EndabgabePrototyp;
     class HotDog extends EndabgabePrototyp.GameObject {
         constructor(_name, _position, _size) {
             super(_name, _position, _size);
-            this.numberOfSauceLoadsOnTheHotDog = 0;
+            this.numberOfSauceLoadsOnHotDog = 0;
             this.speed = 30;
             this.ctrMovement = new f.Control("HotDogSpeed", 0.3, 0 /* PROPORTIONAL */);
             this.displayNumberOfSauceLoads = document.getElementById("numberOfItems");
@@ -73,25 +73,27 @@ var EndabgabePrototyp;
             let cmpMaterial = new f.ComponentMaterial(mtrHotDog);
             cmpMaterial.pivot.scale(f.Vector2.ONE(1));
             this.addComponent(cmpMaterial);
-            /* this.mtxLocal.scaleX(3);
-            this.rect.size.x = this.mtxLocal.translation.x; */
         }
-        /* public hndShoot(): void {
-            console.log("Sausage is moving...");
-            console.log(this);
-        } */
         updateHotDog(_walls) {
             this.ctrMovement.setDelay(100);
-            this.ctrMovement.setInput(f.Keyboard.mapToValue(-1, 0, [f.KEYBOARD_CODE.S, f.KEYBOARD_CODE.ARROW_LEFT])
-                + f.Keyboard.mapToValue(1, 0, [f.KEYBOARD_CODE.W, f.KEYBOARD_CODE.ARROW_RIGHT]));
+            this.ctrMovement.setInput(f.Keyboard.mapToValue(-1, 0, [f.KEYBOARD_CODE.A, f.KEYBOARD_CODE.ARROW_LEFT])
+                + f.Keyboard.mapToValue(1, 0, [f.KEYBOARD_CODE.D, f.KEYBOARD_CODE.ARROW_RIGHT]));
             this.posOld = this.mtxLocal.translation;
             this.moveHotDog(this.ctrMovement.getOutput(), _walls);
-            this.displayNumberOfSauceLoads.innerHTML = "" + this.numberOfSauceLoadsOnTheHotDog;
-            if (this.numberOfSauceLoadsOnTheHotDog >= EndabgabePrototyp.currentDifficultyValues.numberOfNeededSauce) {
+            this.displayNumberOfSauceLoads.innerHTML = "" + this.numberOfSauceLoadsOnHotDog;
+            if (this.numberOfSauceLoadsOnHotDog >= EndabgabePrototyp.currentDifficultyValues.numberOfNeededSauce) {
                 EndabgabePrototyp.sceneBuilder1.gameState = EndabgabePrototyp.GAMESTATE.PAUSE;
                 setTimeout(function () { EndabgabePrototyp.sceneBuilder1.gameState = EndabgabePrototyp.GAMESTATE.PLAY; }, 3000);
                 EndabgabePrototyp.sceneBuilder1.levelStatus = EndabgabePrototyp.Level.NEXTLEVEL;
             }
+        }
+        moveHotDog(_direction, _walls) {
+            this.mtxLocal.translateX(_direction * this.speed * f.Loop.timeFrameGame / 1000);
+            this.constructCollisionRect(new f.Vector2(0, 0), [0, 0, 0, 0]);
+            //console.log(this);
+            this.rect.position.x = this.mtxLocal.translation.x - this.rect.size.x / 2;
+            this.rect.position.y = this.mtxLocal.translation.y - this.rect.size.y / 2;
+            this.hndWallCollision(_walls);
         }
         hndWallCollision(_walls) {
             for (let wall of _walls.getChildren()) {
@@ -125,14 +127,6 @@ var EndabgabePrototyp;
                 }
             }
         }
-        moveHotDog(_direction, _walls) {
-            this.mtxLocal.translateX(_direction * this.speed * f.Loop.timeFrameGame / 1000);
-            this.constructCollisionRect(new f.Vector2(0, 0), [0, 0, 0, 0]);
-            //console.log(this);
-            this.rect.position.x = this.mtxLocal.translation.x - this.rect.size.x / 2;
-            this.rect.position.y = this.mtxLocal.translation.y - this.rect.size.y / 2;
-            this.hndWallCollision(_walls);
-        }
     }
     EndabgabePrototyp.HotDog = HotDog;
 })(EndabgabePrototyp || (EndabgabePrototyp = {}));
@@ -156,19 +150,8 @@ var EndabgabePrototyp;
             cmpMaterial.pivot.scale(f.Vector2.ONE(1));
             this.addComponent(cmpMaterial);
         }
-        /* public hndShoot(): void {
-            console.log("Sausage is moving...");
-            console.log(this);
-        } */
         updateHotDogBun(_walls) {
-            /* if (this.mtxLocal.translation.x > -10) {
-                this.move(-5);
-            } else if (this.mtxLocal.translation.x < 10) {
-                this.move(5);
-            } */
-            //this.move(this.speed);
             this.posOld = this.mtxLocal.translation;
-            //let current
             this.hndWallCollision(_walls);
         }
         hndWallCollision(_walls) {
@@ -178,15 +161,10 @@ var EndabgabePrototyp;
         }
         checkWallCollision(_wall) {
             let intersection = this.rect.getIntersection(_wall.rect);
-            //console.log(_wall.rect.position);
-            //console.log(this.rect.position);
             if (intersection == null)
                 this.move(this.speed);
             else if (intersection != null) {
-                console.log("collision");
                 this.mtxLocal.translation = this.posOld;
-                /* this.rect.position.y = this.posOld.y;
-                this.rect.position.x = this.posOld.x; */
                 this.speed = this.speed * (-1);
                 while (this.rect.getIntersection(_wall.rect) != null) {
                     this.mtxLocal.translateX(this.speed * 0.01 * f.Loop.timeFrameGame / 1000);
@@ -211,7 +189,7 @@ var EndabgabePrototyp;
     class HotDogWithSauce extends EndabgabePrototyp.GameObject {
         constructor(_name, _position, _size) {
             super(_name, _position, _size);
-            this.numberOfPicklesOnTheHotDog = 0;
+            this.numberOfPicklesOnHotDog = 0;
             let txtHotDog = new f.TextureImage("../assets/HotDogWithSauce.png");
             let mtrHotDog = new f.Material("Sausage", f.ShaderTexture, new f.CoatTextured(f.Color.CSS("WHITE"), txtHotDog));
             let cmpMaterial = new f.ComponentMaterial(mtrHotDog);
@@ -220,7 +198,7 @@ var EndabgabePrototyp;
         }
         updateHotDogWithSauce() {
             this.constructCollisionRect(new f.Vector2(2, 2), [20, 10, 20, 50]);
-            if (this.numberOfPicklesOnTheHotDog >= EndabgabePrototyp.currentDifficultyValues.numberOfPicklesNeeded) {
+            if (this.numberOfPicklesOnHotDog >= EndabgabePrototyp.currentDifficultyValues.numberOfPicklesNeeded) {
                 EndabgabePrototyp.sceneBuilder1.gameState = EndabgabePrototyp.GAMESTATE.PAUSE;
                 setTimeout(function () { EndabgabePrototyp.sceneBuilder1.gameState = EndabgabePrototyp.GAMESTATE.PLAY; }, 3000);
                 EndabgabePrototyp.sceneBuilder1.levelStatus = EndabgabePrototyp.Level.NEXTLEVEL;
@@ -238,7 +216,6 @@ var EndabgabePrototyp;
         EndabgabePrototyp.root = new f.Node("Root");
         EndabgabePrototyp.sceneBuilder1 = EndabgabePrototyp.SceneBuilder.getInstance();
         EndabgabePrototyp.cmpCamera = new f.ComponentCamera();
-        /* cmpCamera.pivot.translateZ(40 + canvas.width / 10); */
         EndabgabePrototyp.cmpCamera.pivot.translateZ(40);
         EndabgabePrototyp.cmpCamera.pivot.rotateY(180);
         EndabgabePrototyp.viewport = new f.Viewport();
@@ -246,7 +223,6 @@ var EndabgabePrototyp;
         EndabgabePrototyp.crc2 = EndabgabePrototyp.canvas.getContext("2d");
         await EndabgabePrototyp.hndJson("../data/difficulty.json");
         EndabgabePrototyp.sceneBuilder1.readyCurrentLevel(EndabgabePrototyp.Level.MENU);
-        //sceneBuilder1.playAudio("../sounds/gameMusic.mp3", 0.4, true);
         EndabgabePrototyp.sceneBuilder1.gameState = EndabgabePrototyp.GAMESTATE.PLAY;
         f.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, hndLoop);
         f.Loop.start(f.LOOP_MODE.TIME_GAME, 60);
@@ -258,20 +234,14 @@ var EndabgabePrototyp;
         }
         EndabgabePrototyp.viewport.draw();
         EndabgabePrototyp.sceneBuilder1.hndCurrentLvl();
-        /* if(sceneBuilder1.levelStatus == Level.TWO)
-            hotDogOne.constructCollisionRect();  */
-        // posClient = hotDogOne.rect.position;
-        // console.log(posClient);
     }
 })(EndabgabePrototyp || (EndabgabePrototyp = {}));
 var EndabgabePrototyp;
 (function (EndabgabePrototyp) {
     var f = FudgeCore;
     class Pickle extends EndabgabePrototyp.GameObject {
-        //private ctrMovement: ƒ.Control = new ƒ.Control("PickleFireMovementY", 0.3, ƒ.CONTROL_TYPE.PROPORTIONAL);
         constructor(_name, _position, _size) {
             super(_name, _position, _size);
-            //private gravitiy: number = -5;
             this.pickleShootingMovementY = 10;
             let txtPickle = new f.TextureImage("../assets/pickle.png");
             let mtrPickle = new f.Material("Pickle", f.ShaderTexture, new f.CoatTextured(f.Color.CSS("WHITE"), txtPickle));
@@ -293,18 +263,14 @@ var EndabgabePrototyp;
             if (intersection == null)
                 return false;
             if (intersection != null) {
-                //sceneBuilder1.levelStatus = Level.NEXTLEVEL;
-                _hotDog.numberOfPicklesOnTheHotDog++;
-                console.log(_hotDog.numberOfPicklesOnTheHotDog);
-                console.log("Getroffen...");
-                //this.changeSauceSize();
+                EndabgabePrototyp.sceneBuilder1.playAudio("../sounds/pickleLanding.mp3", 1, false);
+                _hotDog.numberOfPicklesOnHotDog++;
                 return true;
             }
             return false;
         }
         hndDistance() {
             let distance = this.mtxWorld.translation.y - this.startingPosition.y;
-            console.log(distance);
             return distance;
         }
     }
@@ -332,24 +298,6 @@ var EndabgabePrototyp;
             cmpMaterial.pivot.scale(f.Vector2.ONE(1));
             this.addComponent(cmpMaterial);
         }
-        /* public readyPickleJar(_pickleJar: PickleJar): void {
-            canvas.addEventListener("mousedown", _pickleJar.hndShoot);
-        } */
-        /* public hndShoot(): void {
-            pickleJarOne.job = JOB.SHOOT;
-            console.log(this);
-            console.log("now shooting...");
-            //console.log(sausageShooterOne.currentSausage.name);
-        } */
-        buildPickle() {
-            let pickleNumber = this.numberOfPickles;
-            let pickleName = "pickle" + `${pickleNumber}`;
-            let positionpickle = new f.Vector3(-0.2, 5.5, 1);
-            let sizepickle = new f.Vector2(2, 2.2);
-            let pickle = new EndabgabePrototyp.Pickle(pickleName, positionpickle, sizepickle);
-            this.currentPickle = pickle;
-            this.appendChild(pickle);
-        }
         updatePickleJar() {
             let displayNumberOfPickles = document.getElementById("numberOfItems");
             switch (this.job) {
@@ -367,14 +315,15 @@ var EndabgabePrototyp;
                 case JOB.WAIT:
                     //console.log("waiting...");
                     //this.ctrMovement.setDelay(100);
-                    this.ctrMovement.setInput(f.Keyboard.mapToValue(-1, 0, [f.KEYBOARD_CODE.S, f.KEYBOARD_CODE.ARROW_LEFT])
-                        + f.Keyboard.mapToValue(1, 0, [f.KEYBOARD_CODE.W, f.KEYBOARD_CODE.ARROW_RIGHT]));
+                    this.ctrMovement.setInput(f.Keyboard.mapToValue(-1, 0, [f.KEYBOARD_CODE.A, f.KEYBOARD_CODE.ARROW_LEFT])
+                        + f.Keyboard.mapToValue(1, 0, [f.KEYBOARD_CODE.D, f.KEYBOARD_CODE.ARROW_RIGHT]));
                     displayNumberOfPickles.innerHTML = this.numberOfPickles.toString();
                     if (this.ctrMovement.getOutput() > 0) {
                         this.pickleSpeed += this.ctrMovement.getOutput();
                         console.log(this.pickleSpeed);
                     }
                     else if (this.ctrMovement.getOutput() < 0) {
+                        EndabgabePrototyp.sceneBuilder1.playAudio("../sounds/shootPickle.mp3", 1, false);
                         this.job = JOB.SHOOT;
                     }
                     else if (this.ctrMovement.getOutput() == 0)
@@ -404,6 +353,15 @@ var EndabgabePrototyp;
                     break;
             }
         }
+        buildPickle() {
+            let pickleNumber = this.numberOfPickles;
+            let pickleName = "pickle" + `${pickleNumber}`;
+            let positionpickle = new f.Vector3(-0.2, 5.5, 1);
+            let sizepickle = new f.Vector2(2, 2.2);
+            let pickle = new EndabgabePrototyp.Pickle(pickleName, positionpickle, sizepickle);
+            this.currentPickle = pickle;
+            this.appendChild(pickle);
+        }
     }
     EndabgabePrototyp.PickleJar = PickleJar;
 })(EndabgabePrototyp || (EndabgabePrototyp = {}));
@@ -419,27 +377,14 @@ var EndabgabePrototyp;
             let cmpMaterial = new f.ComponentMaterial(mtrSauce);
             cmpMaterial.pivot.scale(f.Vector2.ONE(1));
             this.addComponent(cmpMaterial);
-            /* this.rect.position.y -= this.rect.size.y;
-            this.rect.position.x -= this.rect.size.x;
-            this.rect.size.x -= this.rect.size.x / 2; */
-            //this.rect.position.y = 5;
         }
-        /* public hndShoot(): void {
-            console.log("Sausage is moving...");
-            console.log(this);
-        } */
         move() {
             this.mtxLocal.translateY(this.speed * f.Loop.timeFrameGame / 1000);
             this.constructCollisionRect(new f.Vector2(0, 0), [0, 0, 0, 0]);
-            /* this.rect.position.x = this.mtxWorld.translation.x - this.rect.size.x / 2;
-            this.rect.position.y = this.mtxWorld.translation.y - this.rect.size.y / 2; */
-            //console.log(this.rect.position.y);
         }
         hndBunCollision(_bun) {
             let intersection = this.rect2.getIntersection(_bun.rect2);
             if (intersection != null) {
-                //sceneBuilder1.levelStatus = Level.NEXTLEVEL;
-                //console.log("Getroffen...");
                 this.changeSauceSize();
                 return true;
             }
@@ -448,9 +393,6 @@ var EndabgabePrototyp;
         changeSauceSize() {
             this.cmpTransform.local.scaleY(0.95);
             this.speed -= this.speed * -0.05;
-            //console.log("scaling y:  " + this.cmpTransform.local.scaling.y);
-            //this.cmpTransform.local.scaleY(0.5 * this.speed * f.Loop.timeFrameGame / 1000);
-            //console.log(this.speed * f.Loop.timeFrameGame / 1000);
         }
     }
     EndabgabePrototyp.Sauce = Sauce;
@@ -476,37 +418,11 @@ var EndabgabePrototyp;
             cmpMaterial.pivot.scale(f.Vector2.ONE(1));
             this.addComponent(cmpMaterial);
         }
-        /* public get numberOfSausages(): number {
-            return this._numberOfSausages;
-        }
-        public set numberOfSausages(value: number) {
-            this._numberOfSausages = value;
-        }
-
-        public get currentSausage(): Sausage {
-            return this._currentSausage;
-        }
-        public set currentSausage(value: Sausage) {
-            this._currentSausage = value;
-        } */
-        buildSauce() {
-            let sauceNumber = this.numberOfSauceLoads;
-            let sauceName = "sauce" + `${sauceNumber}`;
-            let positionSauce = new f.Vector3(0, 0, 0);
-            let sizeSauce = new f.Vector2(0.5, 5);
-            let sauce = new EndabgabePrototyp.Sauce(sauceName, positionSauce, sizeSauce);
-            this.currentSauceLoad = sauce;
-            //currentSausage = sausage;
-            this.appendChild(sauce);
-            /* sauce.rect.position.x = sauce.mtxWorld.translation.x;
-            sauce.rect.position.y = sauce.mtxWorld.translation.y; */
-        }
         updateSaucecontainer() {
             switch (this.job) {
                 case JOB.RELOAD:
                     if (this.numberOfSauceLoads > 0) {
                         this.buildSauce();
-                        //console.log("Ready to Shoot...");
                         this.job = JOB.WAIT;
                     }
                     else {
@@ -514,7 +430,6 @@ var EndabgabePrototyp;
                     }
                     break;
                 case JOB.WAIT:
-                    //console.log("waiting...");
                     let randomeNumber = Math.floor(Math.random() * (100 - 0) + 0);
                     if (randomeNumber == 5) {
                         EndabgabePrototyp.sceneBuilder1.playAudio("../sounds/shootSauce.mp3", 1, false);
@@ -522,10 +437,9 @@ var EndabgabePrototyp;
                     }
                     break;
                 case JOB.SHOOT:
-                    //console.log("shoot");
                     this.currentSauceLoad.move();
                     if (this.currentSauceLoad.hndBunCollision(EndabgabePrototyp.hotDogOne) == true) {
-                        EndabgabePrototyp.hotDogOne.numberOfSauceLoadsOnTheHotDog += 0.5;
+                        EndabgabePrototyp.hotDogOne.numberOfSauceLoadsOnHotDog += 0.5;
                     }
                     if (this.currentSauceLoad.mtxLocal.translation.y <= -18 || this.currentSauceLoad.cmpTransform.local.scaling.y < 0.2) {
                         this.removeChild(this.currentSauceLoad);
@@ -537,6 +451,15 @@ var EndabgabePrototyp;
                     this.currentSauceLoad = null;
                     break;
             }
+        }
+        buildSauce() {
+            let sauceNumber = this.numberOfSauceLoads;
+            let sauceName = "sauce" + `${sauceNumber}`;
+            let positionSauce = new f.Vector3(0, 0, 0);
+            let sizeSauce = new f.Vector2(0.5, 5);
+            let sauce = new EndabgabePrototyp.Sauce(sauceName, positionSauce, sizeSauce);
+            this.currentSauceLoad = sauce;
+            this.appendChild(sauce);
         }
     }
     EndabgabePrototyp.SauceContainer = SauceContainer;
@@ -554,31 +477,17 @@ var EndabgabePrototyp;
             let cmpMaterial = new f.ComponentMaterial(mtrSausage);
             cmpMaterial.pivot.scale(f.Vector2.ONE(1));
             this.addComponent(cmpMaterial);
-            /* this.rect.position.y -= this.rect.size.y;
-            this.rect.position.x -= this.rect.size.x;
-            this.rect.size.x -= this.rect.size.x / 2; */
-            //this.rect.position.y = 5;
         }
-        /* public hndShoot(): void {
-            console.log("Sausage is moving...");
-            console.log(this);
-        } */
         move() {
             this.constructCollisionRect(new f.Vector2(2, 3), [20, 0, 20, 60]);
             this.mtxLocal.translateY(this.speed * f.Loop.timeFrameGame / 1000);
             this.rect.position.x = this.mtxLocal.translation.x - this.rect.size.x / 2;
             this.rect.position.y = this.mtxLocal.translation.y - this.rect.size.y;
-            //this.rect.position.y += this.speed  * f.Loop.timeFrameGame / 1000;
-            //this.rect.position.y = this.mtxLocal.translation.y;
-            console.log("Wurst: " + this.mtxLocal.translation.y);
-            console.log("Rechteck: " + this.rect.position.y);
         }
         hndBunCollision(_bun) {
             let intersection = this.rect2.getIntersection(_bun.rect2);
-            console.log("Bun: " + _bun.mtxWorld.translation.y);
             if (intersection != null) {
                 EndabgabePrototyp.hotDogBunOne.bunState = EndabgabePrototyp.BUNSTATE.WAITING;
-                //sceneBuilder1.levelStatus = Level.NEXTLEVEL;
             }
         }
     }
@@ -617,37 +526,15 @@ var EndabgabePrototyp;
         set currentSausage(value) {
             this._currentSausage = value;
         }
-        buildSausage() {
-            let sausageNumber = this.numberOfSausages;
-            let sausageName = "Sausage" + `${sausageNumber}`;
-            let positionSausage = new f.Vector3(1.75, 0, -1);
-            let sizeSausage = new f.Vector2(0.9, 5);
-            let sausage = new EndabgabePrototyp.Sausage(sausageName, positionSausage, sizeSausage);
-            this.currentSausage = sausage;
-            //currentSausage = sausage;
-            this.appendChild(sausage);
-        }
         readySausageShooter(_sausageShooter) {
             EndabgabePrototyp.canvas.addEventListener("mousedown", _sausageShooter.hndShoot);
         }
-        hndShoot() {
-            EndabgabePrototyp.sausageShooterOne.job = JOB.SHOOT;
-            EndabgabePrototyp.sceneBuilder1.playAudio("../sounds/shootSausage.mp3", 1, false);
-        }
-        /* public readySausageShooter(_sausageShooter: SausageShooter9000): void {
-            canvas.addEventListener("mousedown", function(): void {_sausageShooter.shootSausage(); } );
-        } */
-        /* public shootSausage(): void {
-            
-            this.currentSausage.hndShoot();
-        } */
         updateSausageShooter9000() {
             let displayNumberOfSausages = document.getElementById("numberOfItems");
             switch (this.job) {
                 case JOB.RELOAD:
                     if (this._numberOfSausages > 0) {
                         this.buildSausage();
-                        console.log("Ready to Shoot...");
                         this.job = JOB.WAIT;
                     }
                     else {
@@ -660,7 +547,6 @@ var EndabgabePrototyp;
                     displayNumberOfSausages.innerHTML = this._numberOfSausages.toString();
                     break;
                 case JOB.SHOOT:
-                    console.log("shooting...");
                     this._currentSausage.move();
                     this._currentSausage.hndBunCollision(EndabgabePrototyp.hotDogBunOne);
                     if (this._currentSausage.mtxLocal.translation.y >= 17 && EndabgabePrototyp.hotDogBunOne.bunState == EndabgabePrototyp.BUNSTATE.WAITING) {
@@ -683,6 +569,19 @@ var EndabgabePrototyp;
             EndabgabePrototyp.canvas.removeEventListener("mousedown", _sausageShooter.hndShoot);
             let displayNumberOfSausages = document.getElementById("numberOfItems");
             displayNumberOfSausages.innerHTML = "";
+        }
+        hndShoot() {
+            EndabgabePrototyp.sausageShooterOne.job = JOB.SHOOT;
+            EndabgabePrototyp.sceneBuilder1.playAudio("../sounds/shootSausage.mp3", 1, false);
+        }
+        buildSausage() {
+            let sausageNumber = this.numberOfSausages;
+            let sausageName = "Sausage" + `${sausageNumber}`;
+            let positionSausage = new f.Vector3(1.75, 0, -1);
+            let sizeSausage = new f.Vector2(1, 5);
+            let sausage = new EndabgabePrototyp.Sausage(sausageName, positionSausage, sizeSausage);
+            this.currentSausage = sausage;
+            this.appendChild(sausage);
         }
     }
     EndabgabePrototyp.SausageShooter9000 = SausageShooter9000;
@@ -713,9 +612,6 @@ var EndabgabePrototyp;
         GAMESTATE[GAMESTATE["PAUSE"] = 1] = "PAUSE";
     })(GAMESTATE = EndabgabePrototyp.GAMESTATE || (EndabgabePrototyp.GAMESTATE = {}));
     class SceneBuilder {
-        /* public buttonDifficulty1: HTMLButtonElement = <HTMLButtonElement>document.getElementById("buttonDifficulty1");
-        public buttonDifficulty2: HTMLButtonElement = <HTMLButtonElement>document.getElementById("buttonDifficulty2");
-        public buttonDifficulty3: HTMLButtonElement = <HTMLButtonElement>document.getElementById("buttonDifficulty3"); */
         constructor() {
             this.currentDifficulty = Difficulty.virgin;
             this.canvas = document.getElementById("gameScreen");
@@ -728,86 +624,60 @@ var EndabgabePrototyp;
         static getInstance() {
             return SceneBuilder.instance;
         }
-        hndDifficultyButtons() {
-            let ankerDifficulty1 = document.getElementById("difficultyPic1");
-            let ankerDifficulty2 = document.getElementById("difficultyPic2");
-            let ankerDifficulty3 = document.getElementById("difficultyPic3");
-            /* let buttonDifficulty1: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-            let buttonDifficulty2: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-            let buttonDifficulty3: HTMLButtonElement = <HTMLButtonElement>document.createElement("button"); */
-            ankerDifficulty1.addEventListener("click", this.hndDifficulty1);
-            //buttonDifficulty1.innerHTML = "Virgin";
-            //buttonDifficulty1.setAttribute("id", "diff1");
-            ankerDifficulty2.addEventListener("click", this.hndDifficulty2);
-            // buttonDifficulty2.innerHTML = "Normal";
-            //buttonDifficulty2.setAttribute("id", "diff2");
-            ankerDifficulty3.addEventListener("click", this.hndDifficulty3);
-            //buttonDifficulty3.innerHTML = "Sausage Lover";
-            //buttonDifficulty3.setAttribute("id", "diff3");
-            /* ankerDifficulty1.appendChild(buttonDifficulty1);
-            ankerDifficulty2.appendChild(buttonDifficulty2);
-            ankerDifficulty3.appendChild(buttonDifficulty3); */
+        playAudio(url, volume, _loop) {
+            let audio = document.createElement("audio");
+            audio.style.display = "none";
+            audio.src = url;
+            audio.volume = volume;
+            audio.autoplay = true;
+            if (!_loop)
+                audio.onended = function () {
+                    audio.remove();
+                };
+            else
+                audio.onended = function () {
+                    audio.play();
+                };
+            document.body.appendChild(audio);
+            return audio;
         }
-        hndDifficulty1(_event) {
-            console.log("Difficulty: Virgin");
-            this.currentDifficulty = Difficulty.virgin;
-            EndabgabePrototyp.sceneBuilder1.hndCurrentDifficulty("Virgin");
-        }
-        hndDifficulty2(_event) {
-            console.log("Difficulty: Normal");
-            this.currentDifficulty = Difficulty.normal;
-            EndabgabePrototyp.sceneBuilder1.hndCurrentDifficulty("Normal");
-        }
-        hndDifficulty3(_event) {
-            console.log("Difficulty: Sausage Lover");
-            this.currentDifficulty = Difficulty.sausageLover;
-            EndabgabePrototyp.sceneBuilder1.hndCurrentDifficulty("SausageLover");
-        }
-        hndCurrentDifficulty(_difficulty) {
-            for (let i = 0; i < EndabgabePrototyp.difficultyList.length; i++) {
-                /* switch (difficultyList[i].name) {
-                    case difficultyList[i].name = _difficulty: {
-                        currentDifficultyValues = difficultyList[i];
-                        console.log(difficultyList[i].name);
-                        break;
-                    }
-                    
-                } */
-                if (EndabgabePrototyp.difficultyList[i].name == _difficulty) {
-                    EndabgabePrototyp.currentDifficultyValues = EndabgabePrototyp.difficultyList[i];
-                    console.log(EndabgabePrototyp.difficultyList[i].name);
+        hndCurrentLvl() {
+            switch (EndabgabePrototyp.sceneBuilder1.levelStatus) {
+                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.MENU: {
                     break;
                 }
+                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.ONE: {
+                    EndabgabePrototyp.sausageShooterOne.updateSausageShooter9000();
+                    //console.log(this.walls);
+                    EndabgabePrototyp.hotDogBunOne.updateHotDogBun(this.walls);
+                    break;
+                }
+                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.TWO: {
+                    EndabgabePrototyp.hotDogOne.updateHotDog(this.walls);
+                    for (let sauceContainer of this.sauceContainers.getChildren()) {
+                        let currentSauceContainer = sauceContainer;
+                        currentSauceContainer.updateSaucecontainer();
+                    }
+                    //this.sauceContainers.getChild(0);
+                    break;
+                }
+                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.THREE: {
+                    EndabgabePrototyp.pickleJarOne.updatePickleJar();
+                    EndabgabePrototyp.hotDogWithSauceOne.updateHotDogWithSauce();
+                    break;
+                }
+                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.GOAL: {
+                    break;
+                }
+                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.GAMEOVER: {
+                    //sceneBuilder1.readyCurrentLevel(Level.GAMEOVER);
+                    break;
+                }
+                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.NEXTLEVEL:
+                    //sceneBuilder1.levelStatus = this.selectNextLevel();
+                    EndabgabePrototyp.sceneBuilder1.readyCurrentLevel(this.selectNextLevel());
+                    break;
             }
-            this.playAudio("../sounds/letsGo.mp3", 1, false);
-            EndabgabePrototyp.sceneBuilder1.readyCurrentLevel(Level.ONE);
-        }
-        /* public getMousePos(_event: MouseEvent): void {
-            console.log("Mousclick...");
-            let rect: DOMRect = canvas.getBoundingClientRect();
-            let x: number = _event.clientX - rect.left;
-            let y: number = _event.clientY - rect.top;
-            console.log("Coordinate x: " + x, "Coordinate y: " + y);
-            //sceneBuilder1.hndCurrentDifficulty();
-        } */
-        removeDifficultySettings() {
-            let buttonDiv = document.getElementById("difficultyDiv");
-            buttonDiv.innerHTML = "";
-        }
-        makeSettingsVisible() {
-            this.volumeDiv = document.getElementById("volumeDiv");
-            this.volumeDiv.style.visibility = "visible";
-            this.homeButton = document.getElementById("homePic");
-            this.homeButton.style.visibility = "visible";
-            this.volumeSlider = document.getElementById("volumeSlider");
-            this.volumeSlider.addEventListener("change", this.hndVolumeAdjustment);
-        }
-        hideSettings() {
-            this.volumeDiv.style.visibility = "hidden";
-            this.homeButton.style.visibility = "hidden";
-        }
-        hndVolumeAdjustment() {
-            EndabgabePrototyp.sceneBuilder1.backgroundMusic.volume = Number(EndabgabePrototyp.sceneBuilder1.volumeSlider.value);
         }
         readyCurrentLevel(_level) {
             this.itemNameDiv = document.getElementById("currentItem");
@@ -873,60 +743,70 @@ var EndabgabePrototyp;
                 }
             }
         }
-        hndCurrentLvl() {
-            switch (EndabgabePrototyp.sceneBuilder1.levelStatus) {
-                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.MENU: {
-                    break;
-                }
-                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.ONE: {
-                    EndabgabePrototyp.sausageShooterOne.updateSausageShooter9000();
-                    //console.log(this.walls);
-                    EndabgabePrototyp.hotDogBunOne.updateHotDogBun(this.walls);
-                    break;
-                }
-                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.TWO: {
-                    EndabgabePrototyp.hotDogOne.updateHotDog(this.walls);
-                    for (let sauceContainer of this.sauceContainers.getChildren()) {
-                        let currentSauceContainer = sauceContainer;
-                        currentSauceContainer.updateSaucecontainer();
-                    }
-                    //this.sauceContainers.getChild(0);
-                    break;
-                }
-                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.THREE: {
-                    EndabgabePrototyp.pickleJarOne.updatePickleJar();
-                    EndabgabePrototyp.hotDogWithSauceOne.updateHotDogWithSauce();
-                    break;
-                }
-                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.GOAL: {
-                    break;
-                }
-                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.GAMEOVER: {
-                    //sceneBuilder1.readyCurrentLevel(Level.GAMEOVER);
-                    break;
-                }
-                case EndabgabePrototyp.sceneBuilder1.levelStatus = Level.NEXTLEVEL:
-                    //sceneBuilder1.levelStatus = this.selectNextLevel();
-                    EndabgabePrototyp.sceneBuilder1.readyCurrentLevel(this.selectNextLevel());
-                    break;
-            }
+        hndDifficultyButtons() {
+            let ankerDifficulty1 = document.getElementById("difficultyPic1");
+            let ankerDifficulty2 = document.getElementById("difficultyPic2");
+            let ankerDifficulty3 = document.getElementById("difficultyPic3");
+            /* let buttonDifficulty1: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            let buttonDifficulty2: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            let buttonDifficulty3: HTMLButtonElement = <HTMLButtonElement>document.createElement("button"); */
+            ankerDifficulty1.addEventListener("click", this.hndDifficulty1);
+            //buttonDifficulty1.innerHTML = "Virgin";
+            //buttonDifficulty1.setAttribute("id", "diff1");
+            ankerDifficulty2.addEventListener("click", this.hndDifficulty2);
+            // buttonDifficulty2.innerHTML = "Normal";
+            //buttonDifficulty2.setAttribute("id", "diff2");
+            ankerDifficulty3.addEventListener("click", this.hndDifficulty3);
+            //buttonDifficulty3.innerHTML = "Sausage Lover";
+            //buttonDifficulty3.setAttribute("id", "diff3");
+            /* ankerDifficulty1.appendChild(buttonDifficulty1);
+            ankerDifficulty2.appendChild(buttonDifficulty2);
+            ankerDifficulty3.appendChild(buttonDifficulty3); */
         }
-        playAudio(url, volume, _loop) {
-            let audio = document.createElement("audio");
-            audio.style.display = "none";
-            audio.src = url;
-            audio.volume = volume;
-            audio.autoplay = true;
-            if (!_loop)
-                audio.onended = function () {
-                    audio.remove();
-                };
-            else
-                audio.onended = function () {
-                    audio.play();
-                };
-            document.body.appendChild(audio);
-            return audio;
+        hndDifficulty1(_event) {
+            console.log("Difficulty: Virgin");
+            this.currentDifficulty = Difficulty.virgin;
+            EndabgabePrototyp.sceneBuilder1.hndCurrentDifficulty("Virgin");
+        }
+        hndDifficulty2(_event) {
+            console.log("Difficulty: Normal");
+            this.currentDifficulty = Difficulty.normal;
+            EndabgabePrototyp.sceneBuilder1.hndCurrentDifficulty("Normal");
+        }
+        hndDifficulty3(_event) {
+            console.log("Difficulty: Sausage Lover");
+            this.currentDifficulty = Difficulty.sausageLover;
+            EndabgabePrototyp.sceneBuilder1.hndCurrentDifficulty("SausageLover");
+        }
+        hndCurrentDifficulty(_difficulty) {
+            for (let i = 0; i < EndabgabePrototyp.difficultyList.length; i++) {
+                if (EndabgabePrototyp.difficultyList[i].name == _difficulty) {
+                    EndabgabePrototyp.currentDifficultyValues = EndabgabePrototyp.difficultyList[i];
+                    console.log(EndabgabePrototyp.difficultyList[i].name);
+                    break;
+                }
+            }
+            this.playAudio("../sounds/letsGo.mp3", 1, false);
+            EndabgabePrototyp.sceneBuilder1.readyCurrentLevel(Level.ONE);
+        }
+        removeDifficultySettings() {
+            let buttonDiv = document.getElementById("difficultyDiv");
+            buttonDiv.innerHTML = "";
+        }
+        makeSettingsVisible() {
+            this.volumeDiv = document.getElementById("volumeDiv");
+            this.volumeDiv.style.visibility = "visible";
+            this.homeButton = document.getElementById("homePic");
+            this.homeButton.style.visibility = "visible";
+            this.volumeSlider = document.getElementById("volumeSlider");
+            this.volumeSlider.addEventListener("change", this.hndVolumeAdjustment);
+        }
+        hideSettings() {
+            this.volumeDiv.style.visibility = "hidden";
+            this.homeButton.style.visibility = "hidden";
+        }
+        hndVolumeAdjustment() {
+            EndabgabePrototyp.sceneBuilder1.backgroundMusic.volume = Number(EndabgabePrototyp.sceneBuilder1.volumeSlider.value);
         }
         selectNextLevel() {
             switch (EndabgabePrototyp.sceneBuilder1.nextLvl) {
@@ -949,39 +829,19 @@ var EndabgabePrototyp;
             let meshQuad = new f.MeshQuad("Quad");
             let txtBackground = new f.TextureImage("../assets/backgroundTest.png");
             let mtrBackground = new f.Material("Background", f.ShaderTexture, new f.CoatTextured(f.Color.CSS("WHITE"), txtBackground));
-            let floor = new faid.Node("Background", f.Matrix4x4.ROTATION_X(0), mtrBackground, meshQuad);
-            floor.mtxLocal.scale(f.Vector3.ONE(30));
-            floor.mtxLocal.scaleX(10);
-            floor.mtxLocal.translateX(-0.3);
-            //floor.getComponent(f.ComponentMaterial).pivot.scale(f.Vector2.ONE(1));
-            EndabgabePrototyp.root.appendChild(floor);
+            let background = new faid.Node("Background", f.Matrix4x4.ROTATION_X(0), mtrBackground, meshQuad);
+            background.mtxLocal.scale(f.Vector3.ONE(30));
+            background.mtxLocal.scaleX(10);
+            background.mtxLocal.translateX(-0.3);
+            EndabgabePrototyp.root.appendChild(background);
         }
-        /* private buildStartButton(): void {
-            let meshQuad: f.MeshQuad = new f.MeshQuad("Quad");
-            let txtStartButton: f.TextureImage = new f.TextureImage("../assets/button1.png");
-            let mtrStartButton: f.Material = new f.Material("Background", f.ShaderTexture, new f.CoatTextured(f.Color.CSS("WHITE"), txtStartButton));
-            let button: faid.Node = new faid.Node("Background", f.Matrix4x4.ROTATION_X(0), mtrStartButton, meshQuad);
-            button.mtxLocal.scale(f.Vector3.ONE(15));
-            button.mtxLocal.scaleX(1.5);
-            button.mtxLocal.translateZ(0.5);
-            button.mtxLocal.translateY(-0.4);
-            button.mtxLocal.translateX(0.025);
-
-            
-            
-            root.appendChild(button);
-        } */
         buildWalls(_left, _right, _depth) {
             let wallLeft = new EndabgabePrototyp.Wall("wallLeft", new f.Vector3(_left, 0, _depth), new f.Vector2(1, 30));
             let wallRight = new EndabgabePrototyp.Wall("wallRight", new f.Vector3(_right, 0, _depth), new f.Vector2(1, 30));
             this.walls = new f.Node("Walls");
-            /* _this.walls.push(wallLeft);
-            _this.walls.push(wallRight); */
             this.walls.addChild(wallLeft);
             this.walls.addChild(wallRight);
             console.log(this.walls);
-            /* root.appendChild(wallLeft);
-            root.appendChild(wallRight); */
             EndabgabePrototyp.root.appendChild(this.walls);
         }
         buildLevel1() {
@@ -995,34 +855,15 @@ var EndabgabePrototyp;
             let sizeHotDogBun = new f.Vector2(5, 6);
             EndabgabePrototyp.hotDogBunOne = new EndabgabePrototyp.HotDogBun("hotDogBun1", positionHotDogBun, sizeHotDogBun);
             EndabgabePrototyp.root.appendChild(EndabgabePrototyp.hotDogBunOne);
-            //this.buildHotDogRail();
         }
-        /* private buildHotDogRail(): void {
-            let hotDogRail: Wall = new Wall("HotDogRail", new f.Vector3(0, 10, 2), new f.Vector2(30, 1));
-            //this.walls.addChild(hotDogRail);
-            root.appendChild(hotDogRail);
-        } */
         buildSausageShooter9000() {
             let positionSausageShooter9000 = new f.Vector3(-4, -7, 5);
             let sizeSausageShooter9000 = new f.Vector2(15, 8);
             EndabgabePrototyp.sausageShooterOne = new EndabgabePrototyp.SausageShooter9000("sausageshooter90001", positionSausageShooter9000, sizeSausageShooter9000);
             EndabgabePrototyp.sausageShooterOne.mtxLocal.scaleX(2);
             EndabgabePrototyp.root.appendChild(EndabgabePrototyp.sausageShooterOne);
-            //sausageShooterOne.buildSausage();
             EndabgabePrototyp.sausageShooterOne.readySausageShooter(EndabgabePrototyp.sausageShooterOne);
-            //canvas.addEventListener("mousedown", sausageShooterOne.shootSausage);
         }
-        /* private buildSausage(_sausageShooter9000: SausageShooter9000): void {
-            let sausageNumber: number = _sausageShooter9000.numberOfSausages;
-            let sausageName: string = "Sausage" + `${sausageNumber}`;
-            let positionSausage: f.Vector3 = new f.Vector3(-0.85, 0, -1);
-            let sizeSausage: f.Vector2 = new f.Vector2(1, 5);
-
-            let sausage: Sausage = new Sausage(sausageName, positionSausage, sizeSausage);
-            _sausageShooter9000.currentSausage = sausage;
-            //currentSausage = sausage;
-            _sausageShooter9000.appendChild(sausage);
-        } */
         buildLevel2() {
             console.log("Build lvl 2");
             this.buildWalls(-18, 18, 0);
@@ -1042,11 +883,8 @@ var EndabgabePrototyp;
             let positionHotDog = new f.Vector3(0, -8, 5);
             EndabgabePrototyp.hotDogOne = new EndabgabePrototyp.HotDog("HotDogOne", positionHotDog, new f.Vector2(6, 2));
             EndabgabePrototyp.root.appendChild(EndabgabePrototyp.hotDogOne);
-            //hotDogOne.mtxLocal.scaleX(3);
         }
         buildLevel3() {
-            console.log("Build lvl 3");
-            //this.buildWalls(-15, 15, 10);
             this.buildPickleJar();
             this.buildHotDogWithSauce();
         }
@@ -1054,16 +892,12 @@ var EndabgabePrototyp;
             let positionPickleJar = new f.Vector3(8, -6, 5);
             EndabgabePrototyp.pickleJarOne = new EndabgabePrototyp.PickleJar("pickleJarOne", positionPickleJar, new f.Vector2(6, 8));
             EndabgabePrototyp.root.appendChild(EndabgabePrototyp.pickleJarOne);
-            //pickleJarOne.readyPickleJar(pickleJarOne);
         }
         buildHotDogWithSauce() {
             let positionHotDogWithSauce = new f.Vector3(-6, -8, 5);
             EndabgabePrototyp.hotDogWithSauceOne = new EndabgabePrototyp.HotDogWithSauce("HotDogWithSauceOne", positionHotDogWithSauce, new f.Vector2(9, 3));
             EndabgabePrototyp.root.appendChild(EndabgabePrototyp.hotDogWithSauceOne);
         }
-        /* private hndStartGame(): void {
-            console.log("Start Game");
-        } */
         buildFinishScreen() {
             this.hideSettings();
             this.playAudio("../sounds/winnerVoice.mp3", 1, false);
@@ -1100,14 +934,11 @@ var EndabgabePrototyp;
     class Wall extends EndabgabePrototyp.GameObject {
         constructor(_name, _position, _size) {
             super(_name, _position, _size);
-            //let txtWall: f.TextureImage = new f.TextureImage("../assets/bun.png");
-            //let mtrWall: f.Material = new f.Material("Sausage", f.ShaderTexture, new f.CoatTextured(null, Wall.mtrSolidWhite));
-            let cmpMaterial = new f.ComponentMaterial(Wall.mtrSolidWhite);
-            //cmpMaterial.pivot.scale(f.Vector2.ONE(1));
+            let cmpMaterial = new f.ComponentMaterial(Wall.mtrSolidWGray);
             this.addComponent(cmpMaterial);
         }
     }
-    Wall.mtrSolidWhite = new f.Material("Grey", f.ShaderUniColor, new f.CoatColored(f.Color.CSS("GRAY")));
+    Wall.mtrSolidWGray = new f.Material("Gray", f.ShaderUniColor, new f.CoatColored(f.Color.CSS("GRAY")));
     EndabgabePrototyp.Wall = Wall;
 })(EndabgabePrototyp || (EndabgabePrototyp = {}));
 //# sourceMappingURL=MainMaster.js.map

@@ -18,26 +18,11 @@ namespace EndabgabePrototyp {
             let cmpMaterial: f.ComponentMaterial = new f.ComponentMaterial(mtrSauce);
             cmpMaterial.pivot.scale(f.Vector2.ONE(1));
             this.addComponent(cmpMaterial);
-            /* this.rect.position.y -= this.rect.size.y;
-            this.rect.position.x -= this.rect.size.x;
-            this.rect.size.x -= this.rect.size.x / 2; */
-            //this.rect.position.y = 5;
-            
-            
         }
 
-        /* public hndShoot(): void {
-            console.log("Sausage is moving...");
-            console.log(this);
-        } */
         public move(): void {
             this.mtxLocal.translateY(this.speed * f.Loop.timeFrameGame / 1000);
             this.constructCollisionRect(new f.Vector2(0, 0), [0, 0, 0, 0]);
-            /* this.rect.position.x = this.mtxWorld.translation.x - this.rect.size.x / 2;
-            this.rect.position.y = this.mtxWorld.translation.y - this.rect.size.y / 2; */
-            
-            //console.log(this.rect.position.y);
-            
         }
 
         public hndBunCollision(_bun: HotDog): boolean {
@@ -45,8 +30,6 @@ namespace EndabgabePrototyp {
              let intersection: f.Rectangle = this.rect2.getIntersection(_bun.rect2);
             
              if (intersection != null) {
-                 //sceneBuilder1.levelStatus = Level.NEXTLEVEL;
-                 //console.log("Getroffen...");
                  this.changeSauceSize();
                  return true;
              }
@@ -57,9 +40,6 @@ namespace EndabgabePrototyp {
          private changeSauceSize(): void {
              this.cmpTransform.local.scaleY(0.95);
              this.speed -= this.speed * -0.05 ;
-             //console.log("scaling y:  " + this.cmpTransform.local.scaling.y);
-             //this.cmpTransform.local.scaleY(0.5 * this.speed * f.Loop.timeFrameGame / 1000);
-             //console.log(this.speed * f.Loop.timeFrameGame / 1000);
          }
 
         

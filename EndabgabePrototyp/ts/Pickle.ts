@@ -5,13 +5,8 @@ namespace EndabgabePrototyp {
     
     export class Pickle extends GameObject {
 
-        
-
-        //private gravitiy: number = -5;
         private pickleShootingMovementY: number = 10;
-        //private isPickleFalling: boolean = false;
         private startingPosition: f.Vector3;
-        //private ctrMovement: ƒ.Control = new ƒ.Control("PickleFireMovementY", 0.3, ƒ.CONTROL_TYPE.PROPORTIONAL);
 
         public constructor(_name: string, _position: f.Vector3, _size: f.Vector2) {
             super(_name, _position, _size);
@@ -22,11 +17,7 @@ namespace EndabgabePrototyp {
             let cmpMaterial: f.ComponentMaterial = new f.ComponentMaterial(mtrPickle);
             cmpMaterial.pivot.scale(f.Vector2.ONE(1));
             this.addComponent(cmpMaterial);
-
             this.startingPosition = this.mtxWorld.translation;
-
-            
-            
         }
 
         public move(_pickleSpeed: number): void {
@@ -47,11 +38,8 @@ namespace EndabgabePrototyp {
                 return false;
 
             if (intersection != null) {
-                //sceneBuilder1.levelStatus = Level.NEXTLEVEL;
-                _hotDog.numberOfPicklesOnTheHotDog++;
-                console.log(_hotDog.numberOfPicklesOnTheHotDog);
-                console.log("Getroffen...");
-                //this.changeSauceSize();
+                sceneBuilder1.playAudio("../sounds/pickleLanding.mp3", 1, false);
+                _hotDog.numberOfPicklesOnHotDog++;
                 return true;
             }
 
@@ -60,27 +48,9 @@ namespace EndabgabePrototyp {
 
 
         public hndDistance(): number {
-
             let distance: number = this.mtxWorld.translation.y - this.startingPosition.y;
-            console.log(distance);
             return distance;
         }
-
-        /* public hndWallCollision(_bun: HotDog): boolean {
-            
-            let intersection: f.Rectangle = this.rect.getIntersection(_bun.rect);
-            
-            if (intersection != null) {
-                //sceneBuilder1.levelStatus = Level.NEXTLEVEL;
-                console.log("Getroffen...");
-                
-                //if (this.mtxWorld)
-                //this.changeSauceSize();
-                return true;
-            }
-            return false;
-                
-        } */
 
         
     }

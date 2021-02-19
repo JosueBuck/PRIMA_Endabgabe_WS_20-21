@@ -25,43 +25,25 @@ namespace EndabgabePrototyp {
             
         }
 
-        /* public hndShoot(): void {
-            console.log("Sausage is moving...");
-            console.log(this);
-        } */
-
         public updateHotDogBun(_walls: f.Node): void {
-            /* if (this.mtxLocal.translation.x > -10) {
-                this.move(-5);
-            } else if (this.mtxLocal.translation.x < 10) {
-                this.move(5);
-            } */
-            //this.move(this.speed);
             this.posOld = this.mtxLocal.translation;
-            
-            //let current
             this.hndWallCollision(_walls);
         }
 
         
 
-        public hndWallCollision(_walls: f.Node): void { 
+        private hndWallCollision(_walls: f.Node): void { 
             for (let wall of _walls.getChildren()) {
                 this.checkWallCollision(<Wall>wall);
             }            
         }
 
-        public checkWallCollision(_wall: Wall): void { 
+        private checkWallCollision(_wall: Wall): void { 
             let intersection: f.Rectangle = this.rect.getIntersection(_wall.rect);
-            //console.log(_wall.rect.position);
-            //console.log(this.rect.position);
             if (intersection == null)
                 this.move(this.speed);
             else if ( intersection != null) {
-                console.log("collision");
                 this.mtxLocal.translation = this.posOld;
-                /* this.rect.position.y = this.posOld.y;
-                this.rect.position.x = this.posOld.x; */
                 this.speed = this.speed * (-1);
                 while (this.rect.getIntersection(_wall.rect) != null) {
                     this.mtxLocal.translateX(this.speed * 0.01  * f.Loop.timeFrameGame / 1000);
@@ -72,8 +54,8 @@ namespace EndabgabePrototyp {
             
         }
 
-        public move(_speed: number): void {
-            if(this.bunState == BUNSTATE.MOVING) {
+        private move(_speed: number): void {
+            if (this.bunState == BUNSTATE.MOVING) {
                 this.constructCollisionRect(new f.Vector2(2, 3), [45, 60, 45, 20]);
                 this.mtxLocal.translateX(_speed * f.Loop.timeFrameGame / 1000);
                 this.rect.position.x = this.mtxLocal.translation.x - this.rect.size.x / 2;

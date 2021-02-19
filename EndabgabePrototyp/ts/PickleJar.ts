@@ -26,30 +26,6 @@ namespace EndabgabePrototyp {
             
         }
 
-        /* public readyPickleJar(_pickleJar: PickleJar): void {
-            canvas.addEventListener("mousedown", _pickleJar.hndShoot);
-        } */
-
-        /* public hndShoot(): void {
-            pickleJarOne.job = JOB.SHOOT;
-            console.log(this);
-            console.log("now shooting...");
-            //console.log(sausageShooterOne.currentSausage.name);
-        } */
-
-        public buildPickle(): void {
-            let pickleNumber: number = this.numberOfPickles;
-            let pickleName: string = "pickle" + `${pickleNumber}`;
-            let positionpickle: f.Vector3 = new f.Vector3(-0.2, 5.5, 1);
-            let sizepickle: f.Vector2 = new f.Vector2(2, 2.2);
-
-            let pickle: Pickle = new Pickle(pickleName, positionpickle, sizepickle);
-            this.currentPickle = pickle;
-            this.appendChild(pickle);
-
-        }
-
-
         public updatePickleJar(): void {
 
             let displayNumberOfPickles: HTMLElement = <HTMLElement>document.getElementById("numberOfItems");
@@ -70,8 +46,8 @@ namespace EndabgabePrototyp {
                     //console.log("waiting...");
                     //this.ctrMovement.setDelay(100);
                     this.ctrMovement.setInput(
-                    f.Keyboard.mapToValue(-1, 0, [f.KEYBOARD_CODE.S, f.KEYBOARD_CODE.ARROW_LEFT])
-                    + f.Keyboard.mapToValue(1, 0, [f.KEYBOARD_CODE.W, f.KEYBOARD_CODE.ARROW_RIGHT])
+                    f.Keyboard.mapToValue(-1, 0, [f.KEYBOARD_CODE.A, f.KEYBOARD_CODE.ARROW_LEFT])
+                    + f.Keyboard.mapToValue(1, 0, [f.KEYBOARD_CODE.D, f.KEYBOARD_CODE.ARROW_RIGHT])
                     );
 
                     displayNumberOfPickles.innerHTML = this.numberOfPickles.toString();
@@ -81,6 +57,7 @@ namespace EndabgabePrototyp {
                         console.log(this.pickleSpeed);
                     }
                     else if (this.ctrMovement.getOutput() < 0) {
+                        sceneBuilder1.playAudio("../sounds/shootPickle.mp3", 1, false);
                         this.job = JOB.SHOOT;
                     }
                     else if (this.ctrMovement.getOutput() == 0)
@@ -117,10 +94,18 @@ namespace EndabgabePrototyp {
             
         }
 
-        /* public pauseSausageShooter(_sausageShooter: SausageShooter9000): void {
-            canvas.removeEventListener("mousedown", _sausageShooter.hndShoot);
-            let displayNumberOfSausages: HTMLElement = <HTMLElement>document.getElementById("numberOfItems");
-            displayNumberOfSausages.innerHTML = "";
-        } */
+        private buildPickle(): void {
+            let pickleNumber: number = this.numberOfPickles;
+            let pickleName: string = "pickle" + `${pickleNumber}`;
+            let positionpickle: f.Vector3 = new f.Vector3(-0.2, 5.5, 1);
+            let sizepickle: f.Vector2 = new f.Vector2(2, 2.2);
+
+            let pickle: Pickle = new Pickle(pickleName, positionpickle, sizepickle);
+            this.currentPickle = pickle;
+            this.appendChild(pickle);
+
+        }
+
+
     }
 }

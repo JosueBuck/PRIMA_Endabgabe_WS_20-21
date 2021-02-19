@@ -18,7 +18,6 @@ namespace EndabgabePrototyp {
         root = new f.Node("Root");
         sceneBuilder1 = SceneBuilder.getInstance();
         cmpCamera = new f.ComponentCamera();
-        /* cmpCamera.pivot.translateZ(40 + canvas.width / 10); */
         cmpCamera.pivot.translateZ(40);
         cmpCamera.pivot.rotateY(180);
 
@@ -29,7 +28,6 @@ namespace EndabgabePrototyp {
         await hndJson("../data/difficulty.json");
 
         sceneBuilder1.readyCurrentLevel(Level.MENU); 
-        //sceneBuilder1.playAudio("../sounds/gameMusic.mp3", 0.4, true);
         sceneBuilder1.gameState = GAMESTATE.PLAY;
 
         f.Loop.addEventListener(f.EVENT.LOOP_FRAME, hndLoop);
@@ -38,7 +36,7 @@ namespace EndabgabePrototyp {
 
 
     function hndLoop(): void {
-        if (sceneBuilder1.gameState == GAMESTATE.PAUSE){
+        if (sceneBuilder1.gameState == GAMESTATE.PAUSE) {
             viewport.draw();
             return;
         }
@@ -47,17 +45,6 @@ namespace EndabgabePrototyp {
             
         viewport.draw();
         sceneBuilder1.hndCurrentLvl();
-
-
-        /* if(sceneBuilder1.levelStatus == Level.TWO)
-            hotDogOne.constructCollisionRect();  */
-        
-        
-        
-        // posClient = hotDogOne.rect.position;
-        // console.log(posClient);
-        
-        
         
 
         

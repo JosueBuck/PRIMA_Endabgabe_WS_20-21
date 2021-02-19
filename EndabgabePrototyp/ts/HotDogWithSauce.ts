@@ -5,7 +5,7 @@ namespace EndabgabePrototyp {
     
     export class HotDogWithSauce extends GameObject {
 
-        public numberOfPicklesOnTheHotDog: number = 0;
+        public numberOfPicklesOnHotDog: number = 0;
         
 
         public constructor(_name: string, _position: f.Vector3, _size: f.Vector2) {
@@ -23,7 +23,7 @@ namespace EndabgabePrototyp {
 
         public updateHotDogWithSauce(): void {
             this.constructCollisionRect(new f.Vector2(2, 2), [20, 10, 20, 50]);
-            if (this.numberOfPicklesOnTheHotDog >= currentDifficultyValues.numberOfPicklesNeeded) {
+            if (this.numberOfPicklesOnHotDog >= currentDifficultyValues.numberOfPicklesNeeded) {
                 sceneBuilder1.gameState = GAMESTATE.PAUSE;
                 setTimeout(function(): void { sceneBuilder1.gameState = GAMESTATE.PLAY; }, 3000);
                 sceneBuilder1.levelStatus = Level.NEXTLEVEL;
