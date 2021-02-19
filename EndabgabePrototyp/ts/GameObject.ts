@@ -1,4 +1,6 @@
 namespace EndabgabePrototyp {
+    
+    
     import f = FudgeCore;
     
     export class GameObject extends f.Node {
