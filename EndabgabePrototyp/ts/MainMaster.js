@@ -190,7 +190,7 @@ var EndabgabePrototyp;
         constructor(_name, _position, _size) {
             super(_name, _position, _size);
             this.numberOfPicklesOnHotDog = 0;
-            let txtHotDog = new f.TextureImage("../assets/HotDogWithSauce.png");
+            let txtHotDog = new f.TextureImage("../assets/hotDogWithSauce.png");
             let mtrHotDog = new f.Material("Sausage", f.ShaderTexture, new f.CoatTextured(f.Color.CSS("WHITE"), txtHotDog));
             let cmpMaterial = new f.ComponentMaterial(mtrHotDog);
             cmpMaterial.pivot.scale(f.Vector2.ONE(1));
