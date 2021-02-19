@@ -1,0 +1,290 @@
+body {
+    background-color: #faebd7;
+    /* background-color: black; */
+    text-align: center; 
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(95, 95, 95);
+}
+
+h1 {
+    font-size: 3vw;
+}
+
+/* Startscreen */
+
+.title {
+    width: 100%;
+}
+
+div .titlePic {
+width: 50vw;
+margin: 5vh 0 -20vh 0;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-around;
+    margin: 0 auto;
+}
+
+.flexDiv {
+    width: 33%;
+}
+
+.flexDiv img {
+    width: 15vw;
+}
+
+.flexDiv .startButton {
+    padding: 30vh 0;
+    width: 25vw;
+}
+
+.flexDiv .startButton:hover {
+    transform: scale(1.1);
+}
+
+.flexDiv .hotDogTopDown {
+    padding: 20vh 0;
+    transition: transform 1s ease-in-out 0s;
+}
+
+.flexDiv #hotDog1:hover {
+    transform: rotate(20deg);
+}
+
+.flexDiv #hotDog2:hover {
+    transform: rotate(-20deg);
+}
+
+/* Manual Page */
+
+.flexDiv  {
+    padding: 0vh 0;
+    
+}
+
+.flexDiv #difficultyPic {
+    padding: 20vh 0;
+    
+}
+
+
+
+.flexDiv .manualPic {
+    margin: 20vh 0 0 0;
+    border: 1px solid;
+    border-color: rgb(95, 95, 95);
+}
+
+.container .flexDiv2 #arrow {
+    margin: 3vh 0 0 0;
+    width: 4vw;
+}
+
+
+/* Difficulty Page */
+.container #volumeDiv {
+    visibility: hidden;
+}
+
+.container .flexDiv .homeButton {
+    margin-right: 20vw;
+
+    width: 5vw;
+    visibility: hidden;
+}
+
+.container .flexDiv .homeButton:hover {
+    transform: scale(1.1);
+}
+
+/* .container #volumeDiv #volumeSlider{
+    
+
+}
+
+.container #volumeDiv #volumeSlider::-webkit-slider-thumb{
+    
+
+} */
+
+.container #itemDiv #currentItem {
+    font-weight: 500;
+}
+
+.flexDiv #musicPic {
+    width: 10vw;
+    margin-left: 20vw;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    margin-left: 20vw;
+    width: 20%;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 12.8px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    background: #d2956f;
+    border-radius: 25px;
+    border: 0px solid #000101;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid #000000;
+    height: 20px;
+    width: 39px;
+    border-radius: 7px;
+    background: #f29569;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -3.6px;
+  }
+  /* input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ac51b5;
+  } */
+  /* input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 12.8px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    background: #ac51b5;
+    border-radius: 25px;
+    border: 0px solid #000101;
+  } */
+  /* input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid #000000;
+    height: 20px;
+    width: 39px;
+    border-radius: 7px;
+    background: #65001c;
+    cursor: pointer;
+  } */
+  /* input[type=range]::-ms-track {
+    width: 100%;
+    height: 12.8px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    border-width: 39px 0;
+    color: transparent;
+  } */
+  /* input[type=range]::-ms-fill-lower {
+    background: #ac51b5;
+    border: 0px solid #000101;
+    border-radius: 50px;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  }
+  input[type=range]::-ms-fill-upper {
+    background: #ac51b5;
+    border: 0px solid #000101;
+    border-radius: 50px;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  }
+  input[type=range]::-ms-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid #000000;
+    height: 20px;
+    width: 39px;
+    border-radius: 7px;
+    background: #65001c;
+    cursor: pointer;
+  }
+  input[type=range]:focus::-ms-fill-lower {
+    background: #ac51b5;
+  }
+  input[type=range]:focus::-ms-fill-upper {
+    background: #ac51b5;
+  } */
+  
+ 
+  
+
+
+
+
+#manual img {
+    width: 2vw;
+}
+
+button {
+    width: 30vw;
+    height: 60vh;
+    font-size: 4vw;
+}
+
+
+
+.flexDiv .difficultyPic{
+    width: 30vw;
+    background-color: rgb(95, 95, 95);
+    border-radius: 10%;
+}
+
+
+#diff1 {
+    box-shadow: none;
+    margin: 1vw;
+    background-color: gray;
+    background-image: url("../assets/diff1.png");
+    background-size: cover;
+    border-radius: 10%;
+    border: none;
+}
+
+#diff2 {
+    margin: 1vw;
+    background-color: gray;
+    background-image: url("../assets/diff2.png");
+    background-size: cover;
+    border-radius: 10%;
+    border: none;
+}
+
+#diff3 {
+    margin: 1vw;
+    background-color: gray;
+    background-image: url("../assets/diff3.png");
+    background-size: cover;
+    border-radius: 10%;
+    border: none;
+}
+
+
+
+
+
+
+
+
+/* Play */
+
+canvas {
+    visibility: hidden;
+    width: 70vw;
+    height: 90vh;
+
+}
+
+
+
+
+
+#musicURL {
+    visibility: hidden;
+}
+
+

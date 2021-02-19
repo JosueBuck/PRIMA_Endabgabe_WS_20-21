@@ -1,0 +1,5 @@
+[
+    { "name": "Virgin", "numberOfSausages": 10, "hotDogBunSpeed": 2, "numberOfSauceLoads": 10, "numberOfNeededSauce": 100, "numberOfPickles": 9, "numberOfPicklesNeeded": 3},
+    { "name": "Normal", "numberOfSausages": 5, "hotDogBunSpeed": 2, "numberOfSauceLoads": 5, "numberOfNeededSauce": 100, "numberOfPickles": 6, "numberOfPicklesNeeded": 3},
+    { "name": "SausageLover", "numberOfSausages": 1, "hotDogBunSpeed": 2, "numberOfSauceLoads": 2, "numberOfNeededSauce": 60, "numberOfPickles": 3,  "numberOfPicklesNeeded": 3}
+]

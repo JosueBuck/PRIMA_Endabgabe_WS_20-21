@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="../../FudgeCore/FudgeCore.js"></script>
+    <script src="../../FudgeAid/FudgeAid.js"></script>
+    <script src="../ts/GameObject.js"></script>
+    <script src="../ts/Sausage.js"></script>
+    <script src="../ts/HotDogBun.js"></script>
+    <script src="../ts/SausageShooter9000.js"></script>
+    <script src="../ts/Wall.js"></script>
+    <script src="../ts/HotDog.js"></script>
+    <script src="../ts/Sauce.js"></script>
+    <script src="../ts/Pickle.js"></script>
+    <script src="../ts/PickleJar.js"></script>
+    <script src="../ts/HotDogWithSauce.js"></script>
+    <script src="../ts/SauceContainer.js"></script>
+    <script src="../ts/SceneBuilder.js" defer></script>
+    <script src="../ts/Controls.js"></script>
+    <script src="../ts/Difficulty.js"></script> 
+    <script src="../ts/main.js" defer></script> -->
+
+    <script src="../../FudgeCore/FudgeCore.js"></script>
+    <script src="../../FudgeAid/FudgeAid.js"></script>
+    <script src="../ts/MainMaster.js" defer></script>
+    
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/favionHotDog.png" />
+    <title>Hot Dog Boy</title>
+</head>
+<body>
+
+
+
+    <div id="difficultyDiv">
+        <h1 id="difficultyText">Choose your sausage fate!</h1>
+        <div class="container" id="difficultyContainer">
+            <div class="flexDiv">
+                <img class="difficultyPic" id="difficultyPic1" src="../assets/diff1.png" alt="">
+            </div>
+
+            <div class="flexDiv">
+                <img class="difficultyPic" id="difficultyPic2" src="../assets/diff2.png" alt="">
+            </div>
+
+            <div class="flexDiv">
+                <img class="difficultyPic" id="difficultyPic3" src="../assets/diff3.png" alt="">
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!-- <div id="difficulty" class="difficulty">
+        <h1 id="difficultyText">Choose your sausage fate!</h1>
+    </div> -->
+
+    <div class="container" id="difficultyContainer">
+        <div class="flexDiv" id="homeAnker">
+            <a href="index.html" id="homeButton"><img src="../assets/home.png" alt="" class="homeButton" id="homePic"></a>
+        </div>
+
+        <div class="flexDiv" id="itemDiv">
+            <p id="currentItem"></p> 
+            <p id="numberOfItems"></p>
+        </div>
+
+        <div class="flexDiv" id="volumeDiv">
+            <!-- <p id="musicText">Music</p> -->
+            <img src="../assets/volume.png" id="musicPic" alt="">
+            <input type="range" min="0" max="1" step="0.1" id="volumeSlider">
+        </div>
+    </div>
+
+    
+
+
+
+    <!-- End Layout -->
+    <div id="endingDiv">
+        <a href="index.html" id="endingAnker"></a>
+    </div>
+    
+
+    <!-- GameOver Layout -->
+    <div id="gameOverDiv">
+        <a href="index.html" id="gameOverAnker"></a>
+    </div>
+
+    
+    <!-- Sceen -->
+    <canvas id="gameScreen"></canvas>
+
+    
+    
+</body>
+</html>
